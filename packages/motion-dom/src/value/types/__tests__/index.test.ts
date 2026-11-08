@@ -274,6 +274,16 @@ describe("rgba()", () => {
         expect(rgba.parse(red)).toEqual(red)
     })
 
+    it("should parse rgba values written in exponent notation", () => {
+        expect(rgba.test("rgba(1e2, 0, 2.55E2, 1e-1)")).toBe(true)
+        expect(rgba.parse("rgba(1e2, 0, 2.55E2, 1e-1)")).toEqual({
+            red: 100,
+            green: 0,
+            blue: 255,
+            alpha: 0.1,
+        })
+    })
+
     it("should correctly combine rgba value", () => {
         expect(rgba.transform(red)).toEqual("rgba(255, 0, 0, 1)")
         expect(rgba.transform(redOutOfRange)).toEqual("rgba(255, 0, 0, 1)")

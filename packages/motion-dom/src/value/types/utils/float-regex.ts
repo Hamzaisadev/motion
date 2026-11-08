@@ -1,1 +1,1 @@
-export const floatRegex = /-?(?:\d+(?:\.\d+)?|\.\d+)/gu
+export const floatRegex = /-?(?:\d+(?:\.\d+)?|\.\d+)(?:[eE][-+]?\d+)?/gu

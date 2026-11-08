@@ -62,3 +62,29 @@ test("mixComplex will only interpolate values outside of CSS variables", () => {
     expect(mixer(0.5)).toBe("rgba(180, 180, 180, 1) 0 var(--grey, 10px) 5px")
     expect(mixer(1)).toBe("rgba(0, 0, 0, 1) 0 var(--grey, 10px) 0px")
 })
+
+test("mixComplex reads numbers written in exponent notation", () => {
+    expect(
+        mixComplex(
+            "translateX(1e-7px) rotate(10deg)",
+            "translateX(100px) rotate(20deg)"
+        )(0.5)
+    ).toBe("translateX(50px) rotate(15deg)")
+    expect(mixComplex("blur(2.5e-7px)", "blur(4px)")(0.5)).toBe("blur(2px)")
+    expect(mixComplex("2E2px 1e+1px", "0px 0px")(0.5)).toBe("100px 5px")
+    expect(
+        mixComplex(
+            "0px 1.6e-8px 3.2e-8px rgba(161, 0, 246, 6.4e-10)",
+            "0px 10px 20px rgba(0, 0, 0, 0.4)"
+        )(0.25)
+    ).toBe(
+        mixComplex(
+            "0px 0px 0px rgba(161, 0, 246, 0)",
+            "0px 10px 20px rgba(0, 0, 0, 0.4)"
+        )(0.25)
+    )
+})
+
+test("mixComplex doesn't treat units starting with e as exponents", () => {
+    expect(mixComplex("1em 2ex", "3em 4ex")(0.5)).toBe("2em 3ex")
+})
